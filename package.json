@@ -15,7 +15,10 @@
     "webpack": "^4.35.2"
   },
   "dependencies": {
+    "@middy/core": "^4.6.0",
+    "@middy/http-json-body-parser": "^4.6.0",
     "aws-sdk": "^2.639.0",
+    "http-errors": "^2.0.0",
     "uuid": "^9.0.0"
   }
 }
