@@ -1,0 +1,6 @@
+AuctionsTableIAM:
+  Effect: Allow
+  Action:
+    - dynamoDB:PutItem
+  Resource:
+    - ${self:custom.AuctionsTable.arn}
