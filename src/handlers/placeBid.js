@@ -15,6 +15,12 @@ async function placeBid(event, context) {
       body: JSON.stringify({ message: "please place a higher bid" }),
     };
   }
+  if (auction.status == "CLOSED") {
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ message: "Bid is Closed" }),
+    };
+  }
 
   const params = {
     TableName: process.env.AUCTIONS_TABLE_NAME,
