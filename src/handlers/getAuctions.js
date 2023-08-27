@@ -13,7 +13,7 @@ async function getAuctions(event, context) {
 
   auctions = results.Items;
   return {
-    statusCode: 201,
+    statusCode: 200,
     body: JSON.stringify(auctions),
   };
 }

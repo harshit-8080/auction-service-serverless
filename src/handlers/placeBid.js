@@ -1,10 +1,20 @@
 import AWS from "aws-sdk";
+import { getAuctionById } from "./getAuction";
 
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
 async function placeBid(event, context) {
   const id = event.pathParameters.id;
   const { amount } = JSON.parse(event.body);
+
+  let auction = await getAuctionById(id);
+
+  if (auction.highestBid.amount > amount) {
+    return {
+      statusCode: 201,
+      body: JSON.stringify({ message: "please place a higher bid" }),
+    };
+  }
 
   const params = {
     TableName: process.env.AUCTIONS_TABLE_NAME,
