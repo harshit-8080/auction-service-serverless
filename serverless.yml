@@ -45,7 +45,12 @@ functions:
     events:
       - http:
           method: PATCH
-          path: /auction/{id}/placeBid                         
+          path: /auction/{id}/placeBid
+
+  processBid:
+    handler: src/handlers/processBid.handler
+    events:
+      - schedule: rate(1 minute)
 
 custom:
   AuctionsTable:
