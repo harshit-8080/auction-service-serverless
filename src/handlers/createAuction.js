@@ -11,6 +11,9 @@ async function createAuction(event, context) {
     title,
     status: "OPEN",
     createAt: new Date().toISOString(),
+    highestBid: {
+      amount: 0,
+    },
   };
 
   await dynamodb
