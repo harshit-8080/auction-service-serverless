@@ -6,10 +6,11 @@ const dynamodb = new AWS.DynamoDB.DocumentClient();
 async function placeBid(event, context) {
   const id = event.pathParameters.id;
   const { amount } = JSON.parse(event.body);
+  const { email } = event.requestContext.authorizer;
 
   let auction = await getAuctionById(id);
 
-  if (auction.highestBid.amount > amount) {
+  if (auction.highestBid.amount >= amount) {
     return {
       statusCode: 201,
       body: JSON.stringify({ message: "please place a higher bid" }),
@@ -22,12 +23,31 @@ async function placeBid(event, context) {
     };
   }
 
+  if (auction.highestBid.Bidder == email) {
+    return {
+      statusCode: 500,
+      body: JSON.stringify({
+        message: "Sorry, Your Bid is the highest at moment",
+      }),
+    };
+  }
+  if (auction.seller == email) {
+    return {
+      statusCode: 500,
+      body: JSON.stringify({
+        message: "Seller can't participate in bid",
+      }),
+    };
+  }
+
   const params = {
     TableName: process.env.AUCTIONS_TABLE_NAME,
     Key: { id },
-    UpdateExpression: "set highestBid.amount = :amount",
+    UpdateExpression:
+      "set highestBid.amount = :amount, highestBid.Bidder = :bidder",
     ExpressionAttributeValues: {
       ":amount": amount,
+      ":bidder": email,
     },
     ReturnValues: "ALL_NEW",
   };
