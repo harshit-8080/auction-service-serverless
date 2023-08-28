@@ -21,3 +21,6 @@ export async function getEndedAuctions(event, context) {
 
   return results.Items;
 }
+
+// ProjectionExpression: 'id, name, price' 
+// Specify the attributes you want to retrieve
